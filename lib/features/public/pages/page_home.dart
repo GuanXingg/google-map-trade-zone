@@ -3,18 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
+import 'package:google_map_new/models/model_zone.dart';
+import 'package:google_map_new/providers/provider_zone.dart';
+import 'package:google_map_new/widgets/custom_alert.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/home/widget_card_item.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static final List<Image> imgUrls = [
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final List<Image> imgUrls = [
     Image.asset('assets/images/slideshow-1.jpg', fit: BoxFit.cover),
     Image.asset('assets/images/slideshow-2.jpg', fit: BoxFit.cover),
     Image.asset('assets/images/slideshow-3.jpg', fit: BoxFit.cover),
     Image.asset('assets/images/slideshow-4.jpg', fit: BoxFit.cover),
   ];
+
+  void handleNavigateDeliPage() {
+    final List<ZoneModel>? zoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData;
+    if (zoneData == null)
+      CAlert.error(context, content: 'You must import zone file first');
+    else
+      Navigator.pushNamed(context, '/delivery');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +62,7 @@ class HomePage extends StatelessWidget {
                 title: 'Delivery',
                 subtitle: 'Let me know your location',
                 icon: Icons.local_shipping,
-                onTap: () => Navigator.pushNamed(context, '/delivery'),
+                onTap: handleNavigateDeliPage,
               ),
               const HomeCardItem(title: 'Pick up', subtitle: 'Find the nearest store', icon: Icons.fastfood),
             ]),
