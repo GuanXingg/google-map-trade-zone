@@ -8,6 +8,7 @@ import 'package:google_map_new/models/model_place.dart';
 import 'package:google_map_new/models/model_zone.dart';
 import 'package:google_map_new/providers/provider_zone.dart';
 import 'package:google_map_new/utils/custom_logger.dart';
+import 'package:google_map_new/widgets/app_bar.dart';
 import 'package:google_map_new/widgets/custom_alert.dart';
 import 'package:provider/provider.dart';
 
@@ -53,10 +54,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('assets/images/logo-symbol.png', width: 120),
-        centerTitle: true,
-      ),
+      appBar: customAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSpace.third),
         child: Column(children: [

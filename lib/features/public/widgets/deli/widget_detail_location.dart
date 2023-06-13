@@ -29,7 +29,7 @@ class DeliDetailLocation extends StatelessWidget {
           const Text('22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh'),
           const SizedBox(height: AppSpace.third),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, '/delivery/zone'),
             style: ButtonStyle(
               minimumSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
               shape: MaterialStatePropertyAll(

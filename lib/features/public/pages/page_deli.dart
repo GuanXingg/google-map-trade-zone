@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
+import 'package:google_map_new/features/public/widgets/deli/widget_current_location.dart';
 import 'package:google_map_new/utils/current_location.dart';
 import 'package:google_map_new/utils/custom_logger.dart';
+import 'package:google_map_new/widgets/app_bar.dart';
 import 'package:google_map_new/widgets/custom_alert.dart';
 import 'package:google_map_new/widgets/markers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,32 +75,14 @@ class _DeliPageState extends State<DeliPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('assets/images/logo-symbol.png', width: 120),
-        centerTitle: true,
-      ),
+      appBar: customAppBar(),
       body: (initPos == null)
           ? const SpinKitDoubleBounce(color: AppColor.highlight)
           : Stack(children: [
               DeliGoogleMap(mapController: kGgController, markers: markers, initPos: initPos),
               const DeliSearchField(),
               const DeliDetailLocation(),
-              Positioned(
-                bottom: 200,
-                right: AppSpace.third,
-                child: Container(
-                  constraints: const BoxConstraints(minWidth: 56, minHeight: 56),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColor.secondary,
-                    boxShadow: [BoxShadow(color: AppColor.unActive, blurRadius: 5, offset: Offset(0, 1))],
-                  ),
-                  child: IconButton(
-                    onPressed: handleCurrentLocation,
-                    icon: const Icon(Icons.location_searching),
-                  ),
-                ),
-              ),
+              DeliCurrentLocation(onTap: handleCurrentLocation),
             ]),
     );
   }

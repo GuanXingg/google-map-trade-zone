@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
+import 'package:google_map_new/widgets/app_bar.dart';
 
 class DeliSearchPage extends StatefulWidget {
   const DeliSearchPage({super.key});
@@ -36,10 +37,7 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('assets/images/logo-symbol.png', width: 120),
-        centerTitle: true,
-      ),
+      appBar: customAppBar(),
       body: Column(children: [
         Container(
           padding: const EdgeInsets.symmetric(vertical: AppSpace.secondary, horizontal: AppSpace.third),

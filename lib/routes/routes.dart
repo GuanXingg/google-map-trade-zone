@@ -11,6 +11,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   if (filePath == '/settings') return home2SettingRoute(settings);
   if (filePath == '/delivery') return home2DeliRoute(settings);
   if (filePath == '/delivery/search') return deli2DeliSearchRoute(settings);
+  if (filePath == '/delivery/zone') return deli2DeliZoneRoute(settings);
 
   return null;
 }
