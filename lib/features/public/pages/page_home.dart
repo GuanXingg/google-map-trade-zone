@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
-import 'package:google_map_new/features/public/widgets/home/widget_card_item.dart';
+
+import '../widgets/home/widget_card_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
