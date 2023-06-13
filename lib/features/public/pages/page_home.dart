@@ -40,9 +40,14 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: AppSpace.minimum),
             Text('Please select the transport you want', style: AppText.label.copyWith(color: AppColor.unActive)),
             const SizedBox(height: AppSpace.secondary),
-            const Column(children: [
-              HomeCardItem(title: 'Delivery', subtitle: 'Let me know your location', icon: Icons.local_shipping),
-              HomeCardItem(title: 'Pick up', subtitle: 'Find the nearest store', icon: Icons.fastfood),
+            Column(children: [
+              HomeCardItem(
+                title: 'Delivery',
+                subtitle: 'Let me know your location',
+                icon: Icons.local_shipping,
+                onTap: () => Navigator.pushNamed(context, '/delivery'),
+              ),
+              const HomeCardItem(title: 'Pick up', subtitle: 'Find the nearest store', icon: Icons.fastfood),
             ]),
           ]),
         )

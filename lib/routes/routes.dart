@@ -8,6 +8,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 
   if (filePath == '/home') return loading2HomeRoute(settings);
   if (filePath == '/settings') return home2SettingRoute(settings);
+  if (filePath == '/delivery') return home2DeliRoute(settings);
 
   return null;
 }

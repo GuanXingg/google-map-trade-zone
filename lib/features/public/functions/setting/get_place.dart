@@ -1,6 +1,5 @@
 import 'package:google_map_new/models/model_coupon.dart';
 import 'package:google_map_new/models/model_place.dart';
-import 'package:google_map_new/utils/custom_logger.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 List<PlaceModel> getPlaceData(List<dynamic> rawPlace, List<CouponModel> couponData) {
