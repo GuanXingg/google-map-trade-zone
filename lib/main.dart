@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import './constants/const_color.dart';
+import './features/public/pages/page_loading.dart';
+import './routes/routes.dart';
 
 void main() => runApp(const MainApp());
 
@@ -12,17 +14,13 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Google Map',
       initialRoute: '/',
+      onGenerateRoute: onGenerateRoute,
       theme: ThemeData(
         primarySwatch: AppBaseColor.primary,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppColor.secondary,
-          foregroundColor: AppColor.third,
-        ),
+        appBarTheme: const AppBarTheme(backgroundColor: AppColor.secondary, foregroundColor: AppColor.third),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: Center(child: Text('Hello World!')),
-      ),
+      home: const LoadingPage(),
     );
   }
 }
