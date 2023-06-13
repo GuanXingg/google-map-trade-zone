@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../features/public/routes/route_deli.dart';
 import '../features/public/routes/route_home.dart';
 import '../features/public/routes/route_loading.dart';
 
@@ -9,6 +10,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   if (filePath == '/home') return loading2HomeRoute(settings);
   if (filePath == '/settings') return home2SettingRoute(settings);
   if (filePath == '/delivery') return home2DeliRoute(settings);
+  if (filePath == '/delivery/search') return deli2DeliSearchRoute(settings);
 
   return null;
 }

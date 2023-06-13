@@ -34,6 +34,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    Provider.of<ZoneProvider>(context, listen: false).loadZoneInStorage();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
