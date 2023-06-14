@@ -22,6 +22,11 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
     setState(() => _isDirty = false);
   }
 
+  void handleSubmitSearch() {
+    Navigator.pop(context);
+    setState(() {});
+  }
+
   @override
   void initState() {
     _focusNode.addListener(() => setState(() => _isFocus = _focusNode.hasFocus));
@@ -79,7 +84,7 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
                 ),
               if (_isFocus)
                 IconButton(
-                  onPressed: () => _isDirty ? Navigator.pop(context) : null,
+                  onPressed: _isDirty ? handleSubmitSearch : null,
                   icon: Icon(
                     Icons.send,
                     size: AppIconSize.primary,

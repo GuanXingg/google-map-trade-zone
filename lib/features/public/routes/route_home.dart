@@ -4,6 +4,7 @@ import '../pages/page_deli.dart';
 import '../pages/page_setting.dart';
 
 PageRouteBuilder home2SettingRoute(RouteSettings settings) => PageRouteBuilder(
+      settings: settings,
       pageBuilder: (_, __, ___) => const SettingPage(),
       transitionDuration: const Duration(milliseconds: 500),
       transitionsBuilder: (_, animation, __, child) => SlideTransition(
@@ -14,6 +15,7 @@ PageRouteBuilder home2SettingRoute(RouteSettings settings) => PageRouteBuilder(
     );
 
 PageRouteBuilder home2DeliRoute(RouteSettings settings) => PageRouteBuilder(
+      settings: settings,
       pageBuilder: (_, __, ___) => const DeliPage(),
       transitionDuration: const Duration(milliseconds: 500),
       transitionsBuilder: (_, animation, __, child) => SlideTransition(

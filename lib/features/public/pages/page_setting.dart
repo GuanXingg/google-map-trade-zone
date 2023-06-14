@@ -36,8 +36,11 @@ class _SettingPageState extends State<SettingPage> {
       final List<ZoneModel> zoneData = getZoneData(rawZoneData, placeData);
 
       Provider.of<ZoneProvider>(context, listen: false).updateZoneData(zoneData);
-      CAlert.success(context,
-          content: 'Add file successful', onConfirm: () => Navigator.popUntil(context, (route) => route.isFirst));
+      CAlert.success(
+        context,
+        content: 'Add file successful',
+        onConfirm: () => Navigator.popUntil(context, (route) => route.settings.name == '/home'),
+      );
     } catch (err) {
       CLog.error('An occurred while import file!!!, log: $err');
       CAlert.error(context, content: 'Could not import trade zone data');
@@ -47,8 +50,11 @@ class _SettingPageState extends State<SettingPage> {
   void handleDeleteFile() {
     Provider.of<ZoneProvider>(context, listen: false).clearZoneData();
 
-    CAlert.success(context,
-        content: 'Remove file successful', onConfirm: () => Navigator.popUntil(context, (route) => route.isFirst));
+    CAlert.success(
+      context,
+      content: 'Remove file successful',
+      onConfirm: () => Navigator.popUntil(context, (route) => route.settings.name == '/home'),
+    );
   }
 
   @override

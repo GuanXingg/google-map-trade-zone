@@ -16,9 +16,9 @@ List<PlaceModel> getPlaceData(List<dynamic> rawPlace, List<CouponModel> couponDa
     final List<String> splitPoint = rawPoint.trim().split(',');
 
     final String name = rawName.trim();
-    final String address = splitDes[0];
-    final String openTime = splitDes[1];
-    final String closeTime = splitDes[2];
+    final String address = splitDes[0].trim();
+    final String openTime = splitDes[1].trim();
+    final String closeTime = splitDes[2].trim();
     final LatLng point = LatLng(double.parse(splitPoint[1]), double.parse(splitPoint[0]));
 
     for (CouponModel couponEl in couponData) {

@@ -18,7 +18,7 @@ List<ZoneModel> getZoneData(List<dynamic> rawZone, List<PlaceModel> placeData) {
       final List<List<String>> splitZoneSpec = splitZone.map((splitZoneEl) => splitZoneEl.split(',')).toList();
 
       final String name = rawName.trim();
-      final String color = '0xFF${splitStyle[1]}';
+      final String color = '0xFF${splitStyle[1]}'.trim();
       final List<LatLng> zone = splitZoneSpec
           .map((splitZoneSpecEl) => LatLng(double.parse(splitZoneSpecEl[1]), double.parse(splitZoneSpecEl[0])))
           .toList();

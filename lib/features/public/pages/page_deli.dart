@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
-import 'package:google_map_new/features/public/widgets/deli/widget_current_location.dart';
 import 'package:google_map_new/utils/current_location.dart';
 import 'package:google_map_new/utils/custom_logger.dart';
 import 'package:google_map_new/widgets/app_bar.dart';
 import 'package:google_map_new/widgets/custom_alert.dart';
+import 'package:google_map_new/widgets/function_button.dart';
 import 'package:google_map_new/widgets/markers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -82,7 +82,11 @@ class _DeliPageState extends State<DeliPage> {
               DeliGoogleMap(mapController: kGgController, markers: markers, initPos: initPos),
               const DeliSearchField(),
               const DeliDetailLocation(),
-              DeliCurrentLocation(onTap: handleCurrentLocation),
+              Positioned(
+                bottom: 200,
+                right: AppSpace.third,
+                child: FunctionButton(icon: const Icon(Icons.location_searching), onTap: handleCurrentLocation),
+              ),
             ]),
     );
   }
