@@ -18,6 +18,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   if (filePath == '/coupons') return deliZone2CouponRoute(settings);
   if (filePath == '/coupons/detail') return coupon2CouponDetailRoute(settings);
   if (filePath == '/user/form') return couponDetail2FormRoute(settings);
+  if (filePath == '/pickup') return home2PickupRoute(settings);
 
   return null;
 }

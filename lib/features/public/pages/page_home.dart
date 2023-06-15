@@ -4,6 +4,7 @@ import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
 import 'package:google_map_new/models/model_zone.dart';
+import 'package:google_map_new/providers/provider_location.dart';
 import 'package:google_map_new/providers/provider_zone.dart';
 import 'package:google_map_new/widgets/custom_alert.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,11 @@ class _HomePageState extends State<HomePage> {
     Image.asset('assets/images/slideshow-4.jpg', fit: BoxFit.cover),
   ];
 
+  void _initLoadData() {
+    Provider.of<ZoneProvider>(context, listen: false).loadZoneInStorage();
+    Provider.of<LocationProvider>(context, listen: false).loadLocation();
+  }
+
   void handleNavigateDeliPage() {
     final List<ZoneModel>? zoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData;
     if (zoneData == null)
@@ -33,10 +39,18 @@ class _HomePageState extends State<HomePage> {
       Navigator.pushNamed(context, '/delivery');
   }
 
+  void handleNavigatePickupPage() {
+    final List<ZoneModel>? zoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData;
+    if (zoneData == null)
+      CAlert.error(context, content: 'You must import zone file first');
+    else
+      Navigator.pushNamed(context, '/pickup');
+  }
+
   @override
   void initState() {
-    Provider.of<ZoneProvider>(context, listen: false).loadZoneInStorage();
     super.initState();
+    _initLoadData();
   }
 
   @override
@@ -52,29 +66,40 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Column(children: [
-        CarouselSlider(items: imgUrls, options: CarouselOptions(autoPlay: true, height: 200)),
-        const SizedBox(height: AppSpace.third),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpace.secondary),
-          width: AppSpace.infinite,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Welcome, Hưng', style: AppText.heading),
-            const SizedBox(height: AppSpace.minimum),
-            Text('Please select the transport you want', style: AppText.label.copyWith(color: AppColor.unActive)),
-            const SizedBox(height: AppSpace.secondary),
-            Column(children: [
-              HomeCardItem(
-                title: 'Delivery',
-                subtitle: 'Let me know your location',
-                icon: Icons.local_shipping,
-                onTap: handleNavigateDeliPage,
-              ),
-              const HomeCardItem(title: 'Pick up', subtitle: 'Find the nearest store', icon: Icons.fastfood),
+      body: Consumer<LocationProvider>(
+        builder: (_, value, __) => Column(children: [
+          CarouselSlider(items: imgUrls, options: CarouselOptions(autoPlay: true, height: 200)),
+          const SizedBox(height: AppSpace.third),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.secondary),
+            width: AppSpace.infinite,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Text('Welcome, Hưng', style: AppText.heading),
+              const SizedBox(height: AppSpace.minimum),
+              Text('Please select the transport you want', style: AppText.label.copyWith(color: AppColor.unActive)),
+              const SizedBox(height: AppSpace.secondary),
+              Column(children: [
+                HomeCardItem(
+                  title: 'Delivery',
+                  subtitle: 'Let me know your location',
+                  currentLocation:
+                      (value.selectedType != null && value.selectedType == 0) ? value.selectedLocation : null,
+                  icon: Icons.local_shipping,
+                  onTap: handleNavigateDeliPage,
+                ),
+                HomeCardItem(
+                  title: 'Pick up',
+                  subtitle: 'Find the nearest store',
+                  currentLocation:
+                      (value.selectedType != null && value.selectedType == 1) ? value.selectedLocation : null,
+                  icon: Icons.fastfood,
+                  onTap: handleNavigatePickupPage,
+                ),
+              ]),
             ]),
-          ]),
-        )
-      ]),
+          )
+        ]),
+      ),
     );
   }
 }

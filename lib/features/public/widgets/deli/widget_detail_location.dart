@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
+import 'package:google_map_new/providers/provider_location.dart';
+import 'package:provider/provider.dart';
 
 class DeliDetailLocation extends StatelessWidget {
   const DeliDetailLocation({super.key});
@@ -29,7 +31,11 @@ class DeliDetailLocation extends StatelessWidget {
           const Text('22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh'),
           const SizedBox(height: AppSpace.third),
           ElevatedButton(
-            onPressed: () => Navigator.pushNamed(context, '/delivery/zone'),
+            onPressed: () {
+              Provider.of<LocationProvider>(context, listen: false)
+                  .updateLocation('22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh', 0);
+              Navigator.pushNamed(context, '/delivery/zone');
+            },
             style: ButtonStyle(
               minimumSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
               shape: MaterialStatePropertyAll(

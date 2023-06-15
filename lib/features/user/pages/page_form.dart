@@ -7,7 +7,12 @@ class FormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(),
+      appBar: customAppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/home')),
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: const Center(child: Text('User form page')),
     );
   }

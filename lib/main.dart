@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import './constants/const_color.dart';
 import './features/public/pages/page_loading.dart';
+import './providers/provider_location.dart';
 import './providers/provider_zone.dart';
 import './routes/routes.dart';
 
@@ -14,7 +15,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ZoneProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => ZoneProvider()),
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+      ],
       child: MaterialApp(
         title: 'Google Map',
         initialRoute: '/',
