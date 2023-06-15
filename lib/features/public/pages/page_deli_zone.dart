@@ -20,7 +20,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../functions/deli_zone/get_min_zone.dart';
-import '../functions/deli_zone/get_place_zone.dart';
+import '../functions/deli_zone/get_place_dis_zone.dart';
 import '../functions/deli_zone/get_zone_point.dart';
 import '../widgets/deli_zone/widget_dialog_place.dart';
 
@@ -65,7 +65,8 @@ class _DeliZonePageState extends State<DeliZonePage> {
       // Get min zone from current location
       final List<LatLng> allZonePos = await getAllZonePoint(newZoneData!);
       final int indexMinZone = getMinZone(currentPos, allZonePos, newZoneData);
-      final List<PointDistanceModel> newPointDisData = sortPlaceZone(currentPos, newZoneData[indexMinZone].placeList);
+      final List<PointDistanceModel> newPointDisData =
+          sortPlaceDisZone(currentPos, newZoneData[indexMinZone].placeList);
 
       // Check has coupon or not
       for (PlaceModel el in newZoneData[indexMinZone].placeList)

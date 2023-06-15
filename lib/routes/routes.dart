@@ -6,6 +6,7 @@ import '../features/public/routes/route_deli.dart';
 import '../features/public/routes/route_deli_zone.dart';
 import '../features/public/routes/route_home.dart';
 import '../features/public/routes/route_loading.dart';
+import '../features/public/routes/route_pick_up.dart';
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   String? filePath = settings.name;
@@ -19,6 +20,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   if (filePath == '/coupons/detail') return coupon2CouponDetailRoute(settings);
   if (filePath == '/user/form') return couponDetail2FormRoute(settings);
   if (filePath == '/pickup') return home2PickupRoute(settings);
+  if (filePath == '/pickup/all') return pickUp2PickUpAllRoute(settings);
 
   return null;
 }

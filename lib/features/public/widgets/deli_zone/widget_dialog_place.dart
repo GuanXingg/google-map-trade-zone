@@ -64,6 +64,10 @@ class DeliZoneDialogPlace extends StatelessWidget {
                       ),
                       Text(placeList[index].address, style: AppText.label),
                       Text(placeDisList[index].description, style: AppText.label),
+                      if (placeList[index].couponList != null && placeList[index].couponList!.isNotEmpty) ...[
+                        const SizedBox(height: 5),
+                        Text('Have ${placeList[index].couponList!.length} coupon', style: AppText.label),
+                      ],
                     ]),
                   ),
                 ),
