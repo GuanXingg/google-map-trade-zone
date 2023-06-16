@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_map_new/features/delivery/pages/delivery.dart';
+import 'package:google_map_new/features/delivery/pages/page_delivery.dart';
 
-import '../../pickup/pages/pick_up.dart';
-import '../pages/setting.dart';
+import '../../pickup/pages/page_pick_up.dart';
+import '../pages/page_setting.dart';
 
 PageRouteBuilder home2SettingRoute(RouteSettings settings) => PageRouteBuilder(
       settings: settings,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_map_new/models/model_place.dart';
 
-import '../../coupon/pages/coupon.dart';
+import '../../coupon/pages/page_coupon.dart';
 
 PageRouteBuilder deliZone2CouponRoute(RouteSettings settings) {
   final dynamic args = settings.arguments;

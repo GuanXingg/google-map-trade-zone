@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../features/coupon/routes/coupon.dart';
-import '../features/coupon/routes/coupon_detail.dart';
-import '../features/delivery/routes/delivery.dart';
-import '../features/delivery/routes/zone.dart';
-import '../features/public/routes/home.dart';
-import '../features/public/routes/loading.dart';
-import '../features/pickup/routes/pick_up.dart';
+import '../features/coupon/routes/route_coupon.dart';
+import '../features/coupon/routes/route_coupon_detail.dart';
+import '../features/delivery/routes/route_delivery.dart';
+import '../features/delivery/routes/route_zone.dart';
+import '../features/public/routes/route_home.dart';
+import '../features/public/routes/route_loading.dart';
+import '../features/pickup/routes/route_pick_up.dart';
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
   String? filePath = settings.name;

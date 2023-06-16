@@ -22,8 +22,8 @@ import 'package:provider/provider.dart';
 import '../functions/zone/get_min_zone.dart';
 import '../functions/zone/get_place_dis_zone.dart';
 import '../functions/zone/get_zone_point.dart';
-import '../widgets/zone/dialog_place.dart';
-import '../widgets/zone/map.dart';
+import '../widgets/zone/widget_dialog_place.dart';
+import '../widgets/zone/widget_map.dart';
 
 class DeliZonePage extends StatefulWidget {
   const DeliZonePage({super.key});

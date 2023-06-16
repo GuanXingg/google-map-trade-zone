@@ -12,9 +12,9 @@ import 'package:google_map_new/widgets/function_button.dart';
 import 'package:google_map_new/widgets/markers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../widgets/delivery/detail_location.dart';
-import '../widgets/delivery/map.dart';
-import '../widgets/delivery/search.dart';
+import '../widgets/delivery/widget_detail_location.dart';
+import '../widgets/delivery/widget_map.dart';
+import '../widgets/delivery/widget_search.dart';
 
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});

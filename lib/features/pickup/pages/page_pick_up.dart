@@ -22,8 +22,8 @@ import 'package:provider/provider.dart';
 
 import '../functions/pick_up/get_all_place.dart';
 import '../functions/pick_up/get_place_dis_zone.dart';
-import '../widgets/pick_up/info.dart';
-import '../widgets/pick_up/carousel_place.dart';
+import '../widgets/pick_up/widget_info.dart';
+import '../widgets/pick_up/widget_carousel_place.dart';
 
 class PickupPage extends StatefulWidget {
   const PickupPage({super.key});

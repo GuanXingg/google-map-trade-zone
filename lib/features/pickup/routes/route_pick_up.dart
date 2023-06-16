@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_map_new/models/model_distance.dart';
 import 'package:google_map_new/models/model_place.dart';
 
-import '../pages/all_place.dart';
+import '../pages/page_all_place.dart';
 
 PageRouteBuilder pickUp2PickUpAllRoute(RouteSettings settings) {
   final dynamic args = settings.arguments;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../pages/zone.dart';
-import '../pages/search.dart';
+import '../pages/page_zone.dart';
+import '../pages/page_search.dart';
 
 PageRouteBuilder deli2DeliSearchRoute(RouteSettings settings) {
   final dynamic args = settings.arguments;

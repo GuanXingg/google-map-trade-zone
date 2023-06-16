@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/home.dart';
+import '../pages/page_home.dart';
 
 PageRouteBuilder loading2HomeRoute(RouteSettings settings) => PageRouteBuilder(
       settings: settings,
