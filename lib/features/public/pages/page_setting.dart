@@ -6,6 +6,7 @@ import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/models/model_coupon.dart';
 import 'package:google_map_new/models/model_place.dart';
 import 'package:google_map_new/models/model_zone.dart';
+import 'package:google_map_new/providers/provider_location.dart';
 import 'package:google_map_new/providers/provider_zone.dart';
 import 'package:google_map_new/utils/custom_logger.dart';
 import 'package:google_map_new/widgets/app_bar.dart';
@@ -49,6 +50,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void handleDeleteFile() {
     Provider.of<ZoneProvider>(context, listen: false).clearZoneData();
+    Provider.of<LocationProvider>(context, listen: false).clearLocation();
 
     CAlert.success(
       context,
