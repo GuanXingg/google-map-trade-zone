@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_map_new/models/model_coupon.dart';
 
-import '../pages/page_coupon_detail.dart';
+import '../pages/detail.dart';
 
 PageRouteBuilder coupon2CouponDetailRoute(RouteSettings settings) {
   final dynamic args = settings.arguments;

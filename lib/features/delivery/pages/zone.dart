@@ -19,10 +19,11 @@ import 'package:google_map_new/widgets/polygons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../functions/deli_zone/get_min_zone.dart';
-import '../functions/deli_zone/get_place_dis_zone.dart';
-import '../functions/deli_zone/get_zone_point.dart';
-import '../widgets/deli_zone/widget_dialog_place.dart';
+import '../functions/zone/get_min_zone.dart';
+import '../functions/zone/get_place_dis_zone.dart';
+import '../functions/zone/get_zone_point.dart';
+import '../widgets/zone/dialog_place.dart';
+import '../widgets/zone/map.dart';
 
 class DeliZonePage extends StatefulWidget {
   const DeliZonePage({super.key});
@@ -33,12 +34,12 @@ class DeliZonePage extends StatefulWidget {
 
 class _DeliZonePageState extends State<DeliZonePage> {
   final Completer<GoogleMapController> kGgController = Completer<GoogleMapController>();
+  final Set<Marker> markers = {};
+  final Set<Polygon> polygons = {};
 
   String selectedPlace = '';
   bool hasCoupon = false;
   LatLng? initPos;
-  Set<Marker> markers = {};
-  Set<Polygon> polygons = {};
   List<ZoneModel> zoneData = [];
   List<PlaceModel> currentPlaceZone = [];
   List<PointDistanceModel> pointDisData = [];
@@ -46,27 +47,18 @@ class _DeliZonePageState extends State<DeliZonePage> {
   Future<void> _initLoadData() async {
     try {
       final LatLng currentPos = await getCurrentLocation();
-      final Set<Marker> newMarkers = {};
-      final Set<Polygon> newPolygons = {};
-      final List<ZoneModel>? newZoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData;
+      final List<ZoneModel> newZoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData!;
+
       bool newHasCoupon = false;
       List<PlaceModel> newCurrentPlaceZone = [];
 
-      // Check zone data in provider has null or not
-      if (newZoneData == null) {
-        CLog.error('An occurred while get zone data!!!');
-        CAlert.error(
-          context,
-          content: 'Can not load data, try import zone file again',
-          onConfirm: () => Navigator.popUntil(context, (route) => route.settings.name == '/delivery'),
-        );
-      }
-
       // Get min zone from current location
-      final List<LatLng> allZonePos = await getAllZonePoint(newZoneData!);
-      final int indexMinZone = getMinZone(currentPos, allZonePos, newZoneData);
-      final List<PointDistanceModel> newPointDisData =
-          sortPlaceDisZone(currentPos, newZoneData[indexMinZone].placeList);
+      final List<LatLng> allZonePos = await getAllZonePoint(newZoneData);
+      final int indexMinZone = getIndexMinZone(currentPos, allZonePos, newZoneData);
+      final List<PointDistanceModel> newPointDisData = sortPlaceDisZone(
+        currentPos,
+        newZoneData[indexMinZone].placeList,
+      );
 
       // Check has coupon or not
       for (PlaceModel el in newZoneData[indexMinZone].placeList)
@@ -87,12 +79,11 @@ class _DeliZonePageState extends State<DeliZonePage> {
       });
 
       // Draw in google map
-      newMarkers.add(currentMarker(currentPos));
+      markers.add(currentMarker(currentPos));
       for (int i = 0; i < newCurrentPlaceZone.length; i++) {
         if (i == 0)
-          newMarkers.add(
+          markers.add(
             highlightMarker(
-              'pos-${newCurrentPlaceZone[i].name}',
               newCurrentPlaceZone[i].point,
               newCurrentPlaceZone[i].name,
               highlightText: 'Suggest place',
@@ -101,9 +92,8 @@ class _DeliZonePageState extends State<DeliZonePage> {
             ),
           );
         else
-          newMarkers.add(
+          markers.add(
             customMarker(
-              'pos-${newCurrentPlaceZone[i].name}',
               newCurrentPlaceZone[i].point,
               newCurrentPlaceZone[i].name,
               info: newCurrentPlaceZone[i].address,
@@ -111,12 +101,10 @@ class _DeliZonePageState extends State<DeliZonePage> {
             ),
           );
       }
-      newPolygons.add(customPolygon('poly-zone', newZoneData[indexMinZone].zone, newZoneData[indexMinZone].color));
+      polygons.add(customPolygon('poly-zone', newZoneData[indexMinZone].zone, newZoneData[indexMinZone].color));
 
       setState(() {
         initPos = currentPos;
-        markers = newMarkers;
-        polygons = newPolygons;
         zoneData = newZoneData;
         hasCoupon = newHasCoupon;
         pointDisData = newPointDisData;
@@ -127,9 +115,7 @@ class _DeliZonePageState extends State<DeliZonePage> {
       CAlert.error(
         context,
         content: 'Can not identify your location, please select again',
-        onConfirm: () {
-          Navigator.popUntil(context, (route) => route.settings.name == '/delivery');
-        },
+        onConfirm: () => Navigator.popUntil(context, (route) => route.settings.name == '/delivery'),
       );
     }
   }
@@ -151,7 +137,7 @@ class _DeliZonePageState extends State<DeliZonePage> {
       final GoogleMapController controller = await kGgController.future;
       final LatLng currentPos = await getCurrentLocation();
       final List<LatLng> allZonePos = await getAllZonePoint(zoneData);
-      final int indexMinZone = getMinZone(currentPos, allZonePos, zoneData);
+      final int indexMinZone = getIndexMinZone(currentPos, allZonePos, zoneData);
 
       final LatLngBounds bounds = getBoundView(currentPos, zoneData[indexMinZone].zone);
       controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
@@ -161,9 +147,9 @@ class _DeliZonePageState extends State<DeliZonePage> {
     }
   }
 
-  void onTapMarkerPlace(String place) {
-    setState(() => selectedPlace = place);
-  }
+  void onTapMarkerPlace(String place) => setState(() => selectedPlace = place);
+
+  void onTapCancelPlace() => setState(() => selectedPlace = '');
 
   @override
   void initState() {
@@ -178,14 +164,12 @@ class _DeliZonePageState extends State<DeliZonePage> {
       body: (initPos == null)
           ? const SpinKitDoubleBounce(color: AppColor.highlight)
           : Stack(children: [
-              GoogleMap(
-                initialCameraPosition: CameraPosition(target: initPos!, zoom: 15),
-                onMapCreated: (controller) => kGgController.complete(controller),
+              DeliveryZoneMap(
+                initPos: initPos,
                 markers: markers,
                 polygons: polygons,
-                onTap: (_) => setState(() => selectedPlace = ''),
-                mapToolbarEnabled: false,
-                zoomControlsEnabled: false,
+                kGgController: kGgController,
+                onTap: onTapCancelPlace,
               ),
               Positioned(
                 top: AppSpace.secondary,

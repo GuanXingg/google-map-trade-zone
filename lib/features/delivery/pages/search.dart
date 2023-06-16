@@ -1,41 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
-import 'package:google_map_new/constants/const_typography.dart';
 import 'package:google_map_new/widgets/app_bar.dart';
 
-class DeliSearchPage extends StatefulWidget {
-  const DeliSearchPage({super.key});
+import '../widgets/search/text_field.dart';
+
+class DeliverySearchPage extends StatefulWidget {
+  final TextEditingController controller;
+  final void Function() handleSubmit;
+
+  const DeliverySearchPage({super.key, required this.controller, required this.handleSubmit});
 
   @override
-  State<DeliSearchPage> createState() => _DeliSearchPageState();
+  State<DeliverySearchPage> createState() => _DeliverySearchPageState();
 }
 
-class _DeliSearchPageState extends State<DeliSearchPage> {
-  final FocusNode _focusNode = FocusNode();
-  final TextEditingController controller = TextEditingController();
+class _DeliverySearchPageState extends State<DeliverySearchPage> {
+  final FocusNode focusNode = FocusNode();
+
   bool _isFocus = false;
   bool _isDirty = false;
 
   void handleDeleteSearch() {
-    controller.clear();
+    widget.controller.clear();
     setState(() => _isDirty = false);
   }
 
-  void handleSubmitSearch() {
-    Navigator.pop(context);
-    setState(() {});
-  }
+  void handleOnChangeValue(String? value) =>
+      (value == null || value.isEmpty) ? setState(() => _isDirty = false) : setState(() => _isDirty = true);
 
   @override
   void initState() {
-    _focusNode.addListener(() => setState(() => _isFocus = _focusNode.hasFocus));
+    focusNode.addListener(() => setState(() => _isFocus = focusNode.hasFocus));
     super.initState();
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -47,8 +49,8 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: AppSpace.secondary, horizontal: AppSpace.third),
           decoration: const BoxDecoration(
-            color: AppColor.secondary,
             boxShadow: [BoxShadow(color: AppColor.unActive, blurRadius: 10)],
+            color: AppColor.secondary,
           ),
           child: Container(
             height: AppSpace.maximum,
@@ -62,21 +64,7 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
                 padding: EdgeInsets.symmetric(horizontal: AppSpace.primary),
                 child: Icon(Icons.search, size: AppIconSize.primary, color: AppColor.unActive),
               ),
-              Expanded(
-                child: TextField(
-                  autofocus: true,
-                  focusNode: _focusNode,
-                  controller: controller,
-                  onChanged: (value) =>
-                      value.isEmpty ? setState(() => _isDirty = false) : setState(() => _isDirty = true),
-                  style: AppText.label,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Let me know your location',
-                    hintStyle: AppText.label.copyWith(color: AppColor.unActive),
-                  ),
-                ),
-              ),
+              DeliverySearchField(focusNode: focusNode, controller: widget.controller, onChanged: handleOnChangeValue),
               if (_isDirty)
                 IconButton(
                   onPressed: handleDeleteSearch,
@@ -84,7 +72,7 @@ class _DeliSearchPageState extends State<DeliSearchPage> {
                 ),
               if (_isFocus)
                 IconButton(
-                  onPressed: _isDirty ? handleSubmitSearch : null,
+                  onPressed: _isDirty ? widget.handleSubmit : null,
                   icon: Icon(
                     Icons.send,
                     size: AppIconSize.primary,

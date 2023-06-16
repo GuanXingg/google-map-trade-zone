@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_map_new/constants/const_color.dart';
@@ -8,19 +9,21 @@ import 'package:google_map_new/constants/const_typography.dart';
 import 'package:google_map_new/models/model_distance.dart';
 import 'package:google_map_new/models/model_place.dart';
 import 'package:google_map_new/models/model_zone.dart';
+import 'package:google_map_new/providers/provider_location.dart';
 import 'package:google_map_new/providers/provider_zone.dart';
 import 'package:google_map_new/utils/current_location.dart';
 import 'package:google_map_new/utils/custom_logger.dart';
 import 'package:google_map_new/widgets/app_bar.dart';
 import 'package:google_map_new/widgets/custom_alert.dart';
+import 'package:google_map_new/widgets/function_button.dart';
 import 'package:google_map_new/widgets/markers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../functions/pick_up/get_all_place.dart';
 import '../functions/pick_up/get_place_dis_zone.dart';
-import '../widgets/pick_up/widget_info.dart';
-import '../widgets/pick_up/widget_list_place.dart';
+import '../widgets/pick_up/info.dart';
+import '../widgets/pick_up/carousel_place.dart';
 
 class PickupPage extends StatefulWidget {
   const PickupPage({super.key});
@@ -31,16 +34,16 @@ class PickupPage extends StatefulWidget {
 
 class _PickupPageState extends State<PickupPage> {
   final Completer<GoogleMapController> kGgController = Completer<GoogleMapController>();
+  final CarouselController kCarouselController = CarouselController();
+  final Set<Marker> markers = {};
 
   int placeSelected = 0;
-  Set<Marker> markers = {};
   List<PointDistanceModel> placeDisData = [];
   List<PlaceModel> placeData = [];
 
   Future<void> _initLoadData() async {
     final LatLng currentPos = await getCurrentLocation();
 
-    final Set<Marker> newMarkers = {};
     final List<ZoneModel> newZoneData = Provider.of<ZoneProvider>(context, listen: false).zoneData!;
     final List<PlaceModel> newPlaceData = getAllPlace(newZoneData);
     final List<PointDistanceModel> newPlaceDisData = sortPlaceDisZone(currentPos, newPlaceData);
@@ -54,12 +57,11 @@ class _PickupPageState extends State<PickupPage> {
       return indexA.compareTo(indexB);
     });
 
-    newMarkers.add(customMarker('pos-current-select', newPlaceData.first.point, newPlaceData.first.name));
+    markers.add(customMarker(newPlaceData.first.point, newPlaceData.first.name));
 
     setState(() {
       placeData = newPlaceData;
       placeDisData = newPlaceDisData;
-      markers = newMarkers;
     });
   }
 
@@ -67,19 +69,16 @@ class _PickupPageState extends State<PickupPage> {
     markers.clear();
     try {
       final GoogleMapController controller = await kGgController.future;
-      final Set<Marker> newMarkers = {};
 
-      newMarkers.add(customMarker('pos-current-place', placeData[index].point, placeData[index].name));
-
+      markers.add(customMarker(placeData[index].point, placeData[index].name));
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: placeData[index].point,
         zoom: 15,
       )));
 
-      setState(() {
-        placeSelected = index;
-        markers = newMarkers;
-      });
+      kCarouselController.jumpToPage(index);
+
+      setState(() => placeSelected = index);
     } catch (err) {
       CLog.error('An occurred while selected place!!!, log: $err');
       CAlert.error(context, content: 'Something went wrong, please try again');
@@ -106,6 +105,19 @@ class _PickupPageState extends State<PickupPage> {
                 mapToolbarEnabled: false,
                 zoomControlsEnabled: false,
               ),
+              if (placeData[placeSelected].couponList != null && placeData[placeSelected].couponList!.isNotEmpty)
+                Positioned(
+                  top: AppSpace.third,
+                  right: AppSpace.secondary,
+                  child: FunctionButton(
+                    icon: Icon(Icons.store, color: AppColor.active),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/coupons',
+                      arguments: {'placeItem': placeData[placeSelected]},
+                    ),
+                  ),
+                ),
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -128,11 +140,22 @@ class _PickupPageState extends State<PickupPage> {
                       placeDisData: placeDisData,
                     ),
                     const SizedBox(height: AppSpace.secondary),
-                    PickupListPlace(
+                    PickupCarouselPlace(
+                      carouselController: kCarouselController,
                       indexSelected: placeSelected,
                       placeData: placeData,
                       placeDisData: placeDisData,
                       onPageChanged: handleSelectedPlace,
+                    ),
+                    const SizedBox(height: AppSpace.secondary),
+                    ElevatedButton(
+                      onPressed: () {
+                        Provider.of<LocationProvider>(context, listen: false)
+                            .updateLocation(placeData[placeSelected].address, 1);
+                        Navigator.pushNamed(context, '/user/form');
+                      },
+                      style: const ButtonStyle(minimumSize: MaterialStatePropertyAll(Size.fromHeight(45))),
+                      child: const Text('Apply and order'),
                     ),
                   ]),
                 ),

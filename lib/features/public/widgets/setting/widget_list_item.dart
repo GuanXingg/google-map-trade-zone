@@ -20,8 +20,8 @@ class SettingListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppSpace.infinite,
       padding: const EdgeInsets.symmetric(vertical: AppSpace.primary),
+      width: AppSpace.infinite,
       decoration: const BoxDecoration(
         color: AppColor.secondary,
         border: Border(bottom: BorderSide(color: AppColor.unActive, width: 1)),
@@ -30,10 +30,7 @@ class SettingListItem extends StatelessWidget {
         onTap: onTap,
         child: ListTile(
           horizontalTitleGap: 10,
-          leading: CircleAvatar(
-            backgroundColor: bgColor,
-            child: Icon(icon, color: AppColor.secondary),
-          ),
+          leading: CircleAvatar(backgroundColor: bgColor, child: Icon(icon, color: AppColor.secondary)),
           title: Text(title, style: AppText.normalBold),
         ),
       ),

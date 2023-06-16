@@ -3,8 +3,11 @@ import 'package:google_map_new/constants/const_color.dart';
 import 'package:google_map_new/constants/const_space.dart';
 import 'package:google_map_new/constants/const_typography.dart';
 
-class DeliSearchField extends StatelessWidget {
-  const DeliSearchField({super.key});
+class DeliSearch extends StatelessWidget {
+  final TextEditingController searchController;
+  final void Function() handleSubmit;
+
+  const DeliSearch({super.key, required this.searchController, required this.handleSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,9 @@ class DeliSearchField extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColor.secondary,
           borderRadius: BorderRadius.circular(AppRounded.minimum),
-          boxShadow: const [BoxShadow(color: AppColor.unActive, blurRadius: 5, offset: Offset(0, 2))],
+          boxShadow: const [BoxShadow(color: AppColor.unActive, blurRadius: 5, offset: Offset(0, 1))],
         ),
-        child: Row(children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSpace.primary),
             child: Icon(Icons.search, size: AppIconSize.primary, color: AppColor.unActive),
@@ -27,7 +30,10 @@ class DeliSearchField extends StatelessWidget {
           Expanded(
             child: TextField(
               readOnly: true,
-              onTap: () => Navigator.pushNamed(context, '/delivery/search'),
+              onTap: () => Navigator.pushNamed(context, '/delivery/search', arguments: {
+                'searchController': searchController,
+                'handleSubmit': handleSubmit,
+              }),
               style: AppText.label,
               decoration: InputDecoration(
                 border: InputBorder.none,

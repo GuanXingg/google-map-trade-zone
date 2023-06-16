@@ -6,14 +6,16 @@ import 'package:google_map_new/constants/const_typography.dart';
 import 'package:google_map_new/models/model_distance.dart';
 import 'package:google_map_new/models/model_place.dart';
 
-class PickupListPlace extends StatelessWidget {
+class PickupCarouselPlace extends StatelessWidget {
+  final CarouselController carouselController;
   final int indexSelected;
   final List<PlaceModel> placeData;
   final List<PointDistanceModel> placeDisData;
   final void Function(int) onPageChanged;
 
-  const PickupListPlace({
+  const PickupCarouselPlace({
     super.key,
+    required this.carouselController,
     required this.indexSelected,
     required this.placeData,
     required this.placeDisData,
@@ -25,6 +27,7 @@ class PickupListPlace extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: CarouselSlider(
+        carouselController: carouselController,
         options: CarouselOptions(
           enableInfiniteScroll: false,
           viewportFraction: 0.7,

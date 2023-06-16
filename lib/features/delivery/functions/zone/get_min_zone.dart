@@ -18,7 +18,7 @@ int getIndexMinZonePos(LatLng currentPos, List<LatLng> allZonePos) {
   return index;
 }
 
-int getMinZone(LatLng currentPos, List<LatLng> allZonePos, List<ZoneModel> zoneData) {
+int getIndexMinZone(LatLng currentPos, List<LatLng> allZonePos, List<ZoneModel> zoneData) {
   final int indexMinZonePos = getIndexMinZonePos(currentPos, allZonePos);
   final LatLng minZonePos = allZonePos[indexMinZonePos];
 

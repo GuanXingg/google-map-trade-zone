@@ -6,10 +6,15 @@ import 'package:google_map_new/providers/provider_location.dart';
 import 'package:provider/provider.dart';
 
 class DeliDetailLocation extends StatelessWidget {
-  const DeliDetailLocation({super.key});
+  final TextEditingController searchController;
+
+  const DeliDetailLocation({super.key, required this.searchController});
 
   @override
   Widget build(BuildContext context) {
+    final String location =
+        (searchController.text.isEmpty) ? '22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh' : searchController.text;
+
     return Positioned(
       bottom: 0,
       left: 0,
@@ -28,12 +33,11 @@ class DeliDetailLocation extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Location', style: AppText.normalBold),
           const SizedBox(height: AppSpace.primary),
-          const Text('22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh'),
+          Text(location),
           const SizedBox(height: AppSpace.third),
           ElevatedButton(
             onPressed: () {
-              Provider.of<LocationProvider>(context, listen: false)
-                  .updateLocation('22 Hoàng Diệu, Phường 12, Quận 4, Tp. Hồ Chí Minh', 0);
+              Provider.of<LocationProvider>(context, listen: false).updateLocation(location, 0);
               Navigator.pushNamed(context, '/delivery/zone');
             },
             style: ButtonStyle(

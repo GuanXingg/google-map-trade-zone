@@ -12,35 +12,30 @@ import 'package:google_map_new/widgets/function_button.dart';
 import 'package:google_map_new/widgets/markers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../widgets/deli/widget_detail_location.dart';
-import '../widgets/deli/widget_map.dart';
-import '../widgets/deli/widget_search.dart';
+import '../widgets/delivery/detail_location.dart';
+import '../widgets/delivery/map.dart';
+import '../widgets/delivery/search.dart';
 
-class DeliPage extends StatefulWidget {
-  const DeliPage({super.key});
+class DeliveryPage extends StatefulWidget {
+  const DeliveryPage({super.key});
 
   @override
-  State<DeliPage> createState() => _DeliPageState();
+  State<DeliveryPage> createState() => _DeliveryPageState();
 }
 
-class _DeliPageState extends State<DeliPage> {
+class _DeliveryPageState extends State<DeliveryPage> {
   final Completer<GoogleMapController> kGgController = Completer<GoogleMapController>();
   final TextEditingController searchController = TextEditingController();
+  final Set<Marker> markers = {};
 
   LatLng? initPos;
-  Set<Marker> markers = {};
 
   Future<void> _initLoadData() async {
     try {
       final LatLng currentPos = await getCurrentLocation();
-      final Set<Marker> newMarkers = {};
 
-      newMarkers.add(currentMarker(currentPos));
-
-      setState(() {
-        initPos = currentPos;
-        markers = newMarkers;
-      });
+      markers.add(currentMarker(currentPos));
+      setState(() => initPos = currentPos);
     } catch (err) {
       CLog.error('An occurred while load delivery map!!!, log: $err');
       CAlert.error(context, content: 'Can not identify your location');
@@ -54,16 +49,18 @@ class _DeliPageState extends State<DeliPage> {
     try {
       final GoogleMapController controller = await kGgController.future;
       final LatLng currentPos = await getCurrentLocation();
-      final Set<Marker> newMarkers = {};
 
-      newMarkers.add(currentMarker(currentPos));
+      markers.add(currentMarker(currentPos));
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: currentPos, zoom: 15)));
-
-      setState(() => markers = newMarkers);
     } catch (err) {
       CLog.error('An occurred while load delivery map!!!, log: $err');
       CAlert.error(context, content: 'Can not identify your location');
     }
+  }
+
+  void handleSubmitSearchPageValue() {
+    Navigator.pop(context);
+    setState(() {});
   }
 
   @override
@@ -79,14 +76,14 @@ class _DeliPageState extends State<DeliPage> {
       body: (initPos == null)
           ? const SpinKitDoubleBounce(color: AppColor.highlight)
           : Stack(children: [
-              DeliGoogleMap(mapController: kGgController, markers: markers, initPos: initPos),
-              const DeliSearchField(),
-              const DeliDetailLocation(),
+              DeliMap(mapController: kGgController, markers: markers, initPos: initPos),
+              DeliSearch(searchController: searchController, handleSubmit: handleSubmitSearchPageValue),
               Positioned(
                 bottom: 200,
                 right: AppSpace.third,
                 child: FunctionButton(icon: const Icon(Icons.location_searching), onTap: handleCurrentLocation),
               ),
+              DeliDetailLocation(searchController: searchController),
             ]),
     );
   }

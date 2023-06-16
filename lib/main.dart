@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './constants/const_color.dart';
-import './features/public/pages/page_loading.dart';
+import 'features/public/pages/loading.dart';
 import './providers/provider_location.dart';
 import './providers/provider_zone.dart';
 import './routes/routes.dart';

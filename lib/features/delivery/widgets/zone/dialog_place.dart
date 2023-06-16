@@ -11,15 +11,19 @@ class DeliZoneDialogPlace extends StatelessWidget {
   final List<PlaceModel> placeList;
   final List<PointDistanceModel> placeDisList;
 
-  const DeliZoneDialogPlace(
-      {super.key, required this.selectedPlace, required this.placeList, required this.placeDisList});
+  const DeliZoneDialogPlace({
+    super.key,
+    required this.selectedPlace,
+    required this.placeList,
+    required this.placeDisList,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        width: double.infinity,
         padding: const EdgeInsets.all(AppSpace.third),
+        width: double.infinity,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Row(children: [
             Icon(Icons.store, size: AppIconSize.secondary, color: AppColor.third),

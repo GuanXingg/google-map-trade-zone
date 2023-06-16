@@ -4,14 +4,13 @@ Marker currentMarker(LatLng pos, {void Function()? onTap}) =>
     Marker(markerId: const MarkerId('pos-current'), position: pos, onTap: onTap);
 
 Marker customMarker(
-  String id,
   LatLng pos,
   String place, {
   String? info,
   void Function(String)? onTap,
 }) =>
     Marker(
-      markerId: MarkerId(id),
+      markerId: MarkerId('pos-$place'),
       position: pos,
       infoWindow: InfoWindow(title: place, snippet: info),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
@@ -19,7 +18,6 @@ Marker customMarker(
     );
 
 Marker highlightMarker(
-  String id,
   LatLng pos,
   String place, {
   String? info,
@@ -27,9 +25,9 @@ Marker highlightMarker(
   void Function(String)? onTap,
 }) =>
     Marker(
-      markerId: MarkerId(id),
+      markerId: MarkerId('pos-$place'),
       position: pos,
-      infoWindow: InfoWindow(title: '$place ${(highlightText == null) ? '' : '($highlightText)'}', snippet: info),
+      infoWindow: InfoWindow(title: (highlightText == null) ? place : '$place ($highlightText)', snippet: info),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
       onTap: (onTap == null) ? null : () => onTap(place),
     );
